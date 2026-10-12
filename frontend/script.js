@@ -1,4 +1,6 @@
-const API = "http://127.0.0.1:5000/api";let map,markers=[],current=[];const $=id=>document.getElementById(id);
+
+const API = "/api";
+let map,markers=[],current=[];const $=id=>document.getElementById(id);
 async function api(path,options={}){const r=await fetch(API+path,options);if(!r.ok){let t=await r.text();throw new Error(t||`HTTP ${r.status}`)}return r.json()}
 function setStatus(ok){$("statusDot").style.background=ok?"#4ade80":"#fb7185";$("statusText").textContent=ok?"API + MySQL connected":"Backend unavailable"}
 function showError(msg){$("errorBox").textContent=msg;$("errorBox").classList.remove("hidden")}
