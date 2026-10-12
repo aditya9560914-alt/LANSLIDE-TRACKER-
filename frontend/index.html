@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landslide Alert & Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-icon">⛰</div><div><b>Landslide</b><span>Alert & Tracker</span></div></div>
+    <nav>
+      <a class="active" href="#dashboard">⌂ <span>Dashboard</span></a>
+      <a href="#reports">◉ <span>Landslide Reports</span></a>
+      <a href="#mapSection">⌖ <span>Interactive Map</span></a>
+      <a href="#analytics">▥ <span>Analytics</span></a>
+      <a href="#report">＋ <span>Report Incident</span></a>
+      <a href="#safety">⚠ <span>Safety Guidelines</span></a>
+    </nav>
+    <div class="side-status"><span id="statusDot"></span><div><small>System status</small><strong id="statusText">Checking...</strong></div></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><span class="eyebrow">INDIA • LANDSLIDE MONITORING</span><h1>Risk intelligence dashboard</h1></div>
+      <button id="refreshBtn" class="btn">↻ Refresh Data</button>
+    </header>
+
+    <section class="hero">
+      <div><span class="pill">● DATABASE CONNECTED</span><h2>Monitor landslide activity<br><em>across India.</em></h2>
+      <p>Explore database-backed incident records, risk categories, locations and trends through a single dashboard.</p>
+      <a class="btn primary" href="#reports">Explore incidents →</a></div>
+      <div class="hero-art"><div class="mountain m1"></div><div class="mountain m2"></div><div class="sun"></div></div>
+    </section>
+
+    <div id="errorBox" class="error hidden"></div>
+
+    <section id="dashboard" class="section">
+      <div class="section-head"><div><span class="eyebrow">COMMAND CENTER</span><h2>Overview</h2></div></div>
+      <div class="stats">
+        <div class="stat"><span>Total Incidents</span><strong id="total">—</strong><i>◉</i></div>
+        <div class="stat high"><span>High Risk</span><strong id="high">—</strong><i>!</i></div>
+        <div class="stat medium"><span>Medium Risk</span><strong id="medium">—</strong><i>◆</i></div>
+        <div class="stat low"><span>Low Risk</span><strong id="low">—</strong><i>✓</i></div>
+        <div class="stat"><span>Active</span><strong id="active">—</strong><i>●</i></div>
+        <div class="stat"><span>States Covered</span><strong id="states">—</strong><i>⌖</i></div>
+        <div class="stat"><span>Districts</span><strong id="districts">—</strong><i>▦</i></div>
+      </div>
+    </section>
+
+    <section id="reports" class="section">
+      <div class="section-head"><div><span class="eyebrow">DATABASE RECORDS</span><h2>Landslide reports</h2></div><span id="resultCount" class="count">0 records</span></div>
+      <div class="toolbar card">
+        <input id="search" placeholder="Search location, district, state or ID">
+        <select id="state"><option value="">All states</option></select>
+        <select id="district"><option value="">All districts</option></select>
+        <select id="risk"><option value="">All risk</option><option>High</option><option>Medium</option><option>Low</option></select>
+        <select id="status"><option value="">All status</option><option>Active</option><option>Monitoring</option><option>Resolved</option></select>
+      </div>
+      <div id="cards" class="cards"><div class="loading">Loading database records...</div></div>
+    </section>
+
+    <section id="mapSection" class="section">
+      <div class="section-head"><div><span class="eyebrow">GEOSPATIAL MONITORING</span><h2>Interactive India map</h2></div></div>
+      <div id="map"></div>
+    </section>
+
+    <section id="analytics" class="section">
+      <div class="section-head"><div><span class="eyebrow">DATA ANALYTICS</span><h2>Incident distribution</h2></div></div>
+      <div class="charts">
+        <div class="chart-card"><h3>Incidents by State</h3><div id="stateChart"></div></div>
+        <div class="chart-card"><h3>Risk distribution</h3><div id="riskChart"></div></div>
+      </div>
+    </section>
+
+    <section id="report" class="section report">
+      <div><span class="eyebrow">COMMUNITY REPORTING</span><h2>Report a landslide</h2><p>Keep reporting simple. Public users only provide the location and basic incident information. Technical data stays in the database/backend.</p></div>
+      <form id="reportForm" class="card form">
+        <label>State *<input id="fState" required placeholder="e.g. Uttarakhand"></label>
+        <label>District *<input id="fDistrict" required placeholder="e.g. Rudraprayag"></label>
+        <label>Location / Area *<input id="fLocation" required placeholder="e.g. Rudraprayag town"></label>
+        <label>Date *<input id="fDate" type="date" required></label>
+        <label class="wide">Short description<textarea id="fDescription" required placeholder="Describe what you observed..."></textarea></label>
+        <button class="btn primary wide" type="submit">Submit Report</button>
+      </form>
+    </section>
+
+    <section id="safety" class="section safety">
+      <div class="section-head"><div><span class="eyebrow">SAFETY</span><h2>What to do during landslide risk</h2></div></div>
+      <div class="safety-grid"><div><b>01</b><h3>Move away</h3><p>Move to a safer area away from unstable slopes and falling debris.</p></div><div><b>02</b><h3>Follow alerts</h3><p>Follow local authorities and emergency instructions.</p></div><div><b>03</b><h3>Avoid blocked roads</h3><p>Do not cross unstable debris or newly blocked routes.</p></div></div>
+    </section>
+
+    <footer>Demo / sample project dataset • Not an official real-time disaster feed.</footer>
+  </main>
+</div>
+
+<div id="modal" class="modal hidden"><div class="modal-box"><button id="closeModal">×</button><div id="modalBody"></div></div></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
